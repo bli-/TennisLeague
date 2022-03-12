@@ -13,5 +13,6 @@ namespace TennisLeague.API.Models
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string? Phone { get; set; } = null;
+        public string? City { get; set; } = null;
     }
 }

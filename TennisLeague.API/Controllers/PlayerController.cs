@@ -36,7 +36,8 @@ namespace TennisLeague.API.Controllers
                     FirstName = player.FirstName,
                     LastName = player.LastName,
                     Email = player.Email,
-                    Phone = player.Phone
+                    Phone = player.Phone,
+                    City = player.City
                 };
             }
 
