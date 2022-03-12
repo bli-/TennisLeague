@@ -17,21 +17,21 @@ export class FetchPlayers extends Component {
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>City</th>
           </tr>
         </thead>
         <tbody>
           {players.map(player =>
             <tr key={player.id.toString()}>
-              <td>{player.id}</td>
               <td>{player.firstName}</td>
               <td>{player.lastName}</td>
               <td>{player.email}</td>
               <td>{player.phone}</td>
+              <td>{player.city}</td>
             </tr>
           )}
         </tbody>

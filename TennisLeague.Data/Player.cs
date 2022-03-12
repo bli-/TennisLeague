@@ -18,5 +18,7 @@ namespace TennisLeague.Data
         public string Email { get; set; } = string.Empty;
         [StringLength(50)]
         public string? Phone { get; set; } = null;
+        [StringLength(200)]
+        public string? City { get; set; } = null;
     }
 }
