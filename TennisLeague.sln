@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisLeague.Web", "TennisL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisLeague.Data", "TennisLeague.Data\TennisLeague.Data.csproj", "{E722A04C-2F5E-4A07-B1B2-BB2DE7A841AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisLeague.API", "TennisLeague.API\TennisLeague.API.csproj", "{210EA3B9-7DB1-4EA3-8519-2393884979EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisLeague.API", "TennisLeague.API\TennisLeague.API.csproj", "{210EA3B9-7DB1-4EA3-8519-2393884979EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisLeague.DataAccess", "TennisLeague.DataAccess\TennisLeague.DataAccess.csproj", "{2F6500D0-9BD1-49D6-8945-AAA17E1C19A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{210EA3B9-7DB1-4EA3-8519-2393884979EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{210EA3B9-7DB1-4EA3-8519-2393884979EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{210EA3B9-7DB1-4EA3-8519-2393884979EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F6500D0-9BD1-49D6-8945-AAA17E1C19A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F6500D0-9BD1-49D6-8945-AAA17E1C19A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F6500D0-9BD1-49D6-8945-AAA17E1C19A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F6500D0-9BD1-49D6-8945-AAA17E1C19A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

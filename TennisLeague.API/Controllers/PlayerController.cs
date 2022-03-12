@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TennisLeague.API.Access;
 using TennisLeague.Data;
 
 namespace TennisLeague.API.Controllers
@@ -12,26 +8,17 @@ namespace TennisLeague.API.Controllers
     [ApiController]
     public class PlayerController
     {
-        private readonly DataContext _dataContext;
+        private readonly IPlayerRepository _playerRepository;
 
-        public PlayerController(DataContext context)
+        public PlayerController(IPlayerRepository playerRepository)
         {
-            _dataContext = context;
+            _playerRepository = playerRepository;
         }
 
         [HttpGet()]
         public ActionResult<Models.Player> GetAll()
         {
-            var players = _dataContext.Players.Select(p => 
-                new Models.Player
-                {
-                    ID = p.ID,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Email = p.Email,
-                    Phone = p.Phone
-                }
-            );
+            var players = _playerRepository.GetAllPlayers();
 
             return new OkObjectResult(players);
         }
@@ -39,7 +26,7 @@ namespace TennisLeague.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<Models.Player> Get(int id)
         {
-            var player = _dataContext.Players.FirstOrDefault(z => z.ID == id);
+            var player = _playerRepository.GetPlayerById(id);
 
             if (player != null)
             {
@@ -72,8 +59,15 @@ namespace TennisLeague.API.Controllers
                 Phone = player.Phone
             };
 
-            _dataContext.Players.Add(playerDb);
-            _dataContext.SaveChanges();
+            int? playerId;
+            try
+            {
+                playerId = _playerRepository.AddPlayer(playerDb);
+            } 
+            catch (Exception)
+            {
+                return new BadRequestObjectResult("Player could not be added");
+            }
 
             return new OkResult();
         }
