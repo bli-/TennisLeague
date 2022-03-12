@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TennisLeague.API.Access;
 using TennisLeague.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("AppDb");
+
 builder.Services.AddDbContext<DataContext>(z => z.UseSqlServer(connectionString));
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "CorsFromConfig", policy =>

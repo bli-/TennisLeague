@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TennisLeague.Data\TennisLeague.Data.csproj" />
+    <ProjectReference Include="..\TennisLeague.DataAccess\TennisLeague.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
