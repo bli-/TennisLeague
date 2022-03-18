@@ -45,9 +45,9 @@ namespace TennisLeague.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(Models.Player player)
+        public ActionResult Put(Models.Player player)
         {
-            if (player.ID.HasValue)
+            if (player is null || player.ID.HasValue)
             {
                 return new BadRequestResult();
             }
