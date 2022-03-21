@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TennisLeague.API.Access;
+using TennisLeague.API.Config;
 using TennisLeague.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(TennisLeagueProfile));
 
 var connectionString = builder.Configuration.GetConnectionString("AppDb");
 

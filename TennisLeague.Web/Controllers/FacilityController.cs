@@ -4,16 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TennisLeague.Web.Models;
 
 namespace TennisLeague.Web.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class PlayerController : ControllerBase
+    public class FacilityController : ControllerBase
     {
         private readonly HttpClient _httpClient;
-        public PlayerController(IHttpClientFactory httpClientFactory)
+        public FacilityController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient();
         }

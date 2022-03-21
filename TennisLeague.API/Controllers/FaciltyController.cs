@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using TennisLeague.Data;
 using TennisLeague.DataAccess;
 
@@ -6,43 +7,34 @@ namespace TennisLeague.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class FaciltyController
+    public class FaciltyController : ControllerBase
     {
         private readonly IFacilityRepository _facilityRepoistory;
+        private readonly IMapper _mapper;
 
-        public FaciltyController(IFacilityRepository facilityRepository)
+        public FaciltyController(IFacilityRepository facilityRepository, IMapper mapper)
         {
             _facilityRepoistory = facilityRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult<Models.Facility> Get(int id)
         {
-            var facilityDb = _facilityRepoistory.Get(id);
+            var facility = _facilityRepoistory.Get(id);
 
-            if (facilityDb is null) return new NotFoundResult();
+            if (facility is null) return new NotFoundResult();
 
-            return new Models.Facility
-            {
-                Name = facilityDb.Name,
-                City = facilityDb.City,
-                State = facilityDb.State,
-                Zip = facilityDb.Zip5,
-                MaxPlayers = facilityDb.MaxPlayers,
-                Fee = facilityDb.Fee,
-            };
+            return _mapper.Map<Models.Facility>(facility);
         }
 
         [HttpPost()]
-        public ActionResult Create(Models.Facility facility)
+        public ActionResult<Models.Facility> Create(Models.Facility facilityDto)
         {
-            var facilityDb = new Facility
-            {
-                Name = facility.Name
-            };
+            var facilityDb = _mapper.Map<Facility>(facilityDto);
             _facilityRepoistory.Add(facilityDb);
 
-            return new OkResult();
+            return CreatedAtAction(nameof(Get), new { id = facilityDb.ID }, facilityDto);
         }
 
         public ActionResult Edit(int id)

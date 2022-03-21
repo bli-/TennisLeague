@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using TennisLeague.API.Access;
 using TennisLeague.Data;
 
@@ -6,13 +7,15 @@ namespace TennisLeague.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class PlayerController
+    public class PlayerController: ControllerBase
     {
         private readonly IPlayerRepository _playerRepository;
+        private readonly IMapper _mapper;
 
-        public PlayerController(IPlayerRepository playerRepository)
+        public PlayerController(IPlayerRepository playerRepository, IMapper mapper)
         {
             _playerRepository = playerRepository;
+            _mapper = mapper;
         }
 
         [HttpGet()]
@@ -20,7 +23,7 @@ namespace TennisLeague.API.Controllers
         {
             var players = _playerRepository.GetAllPlayers();
 
-            return new OkObjectResult(players);
+            return _mapper.Map<Models.Player>(players);
         }
 
         [HttpGet("{id}")]
@@ -30,18 +33,10 @@ namespace TennisLeague.API.Controllers
 
             if (player != null)
             {
-                return new Models.Player
-                {
-                    ID = player.ID,
-                    FirstName = player.FirstName,
-                    LastName = player.LastName,
-                    Email = player.Email,
-                    Phone = player.Phone,
-                    City = player.City
-                };
+                return _mapper.Map<Models.Player>(player);
             }
 
-            return new NotFoundResult();
+            return NotFound();
         }
 
         [HttpPut]
@@ -52,13 +47,7 @@ namespace TennisLeague.API.Controllers
                 return new BadRequestResult();
             }
 
-            var playerDb = new Player
-            {
-                FirstName = player.FirstName,
-                LastName = player.LastName,
-                Email = player.Email,
-                Phone = player.Phone
-            };
+            var playerDb = _mapper.Map<Player>(player);
 
             int? playerId;
             try
@@ -70,7 +59,7 @@ namespace TennisLeague.API.Controllers
                 return new BadRequestObjectResult("Player could not be added");
             }
 
-            return new OkResult();
+            return Ok();
         }
     }
 }
