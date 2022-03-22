@@ -28,23 +28,47 @@ namespace TennisLeague.API.Controllers
             return _mapper.Map<Models.Facility>(facility);
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<Models.Facility>> GetAll()
+        {
+            var facilities = _facilityRepoistory.GetAll();
+
+            return Ok(facilities.Select(f => _mapper.Map<Models.Facility>(f)));
+        }
+
         [HttpPost()]
         public ActionResult<Models.Facility> Create(Models.Facility facilityDto)
         {
+            if (facilityDto is null || facilityDto.ID.HasValue)
+            {
+                return BadRequest();
+            }
+
             var facilityDb = _mapper.Map<Facility>(facilityDto);
             _facilityRepoistory.Add(facilityDb);
 
             return CreatedAtAction(nameof(Get), new { id = facilityDb.ID }, facilityDto);
         }
 
-        public ActionResult Edit(int id)
+        [HttpPut()]
+        public ActionResult Edit(Models.Facility facilityDto)
         {
-            throw new NotImplementedException();
+            var facilityDb = _mapper.Map<Facility>(facilityDto);
+            _facilityRepoistory.Update(facilityDb);
+
+            return Ok();
         }
 
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            if (_facilityRepoistory.Get(id) == null)
+            {
+                return BadRequest($"Facility ID {id} not found");
+            }
+
+            _facilityRepoistory.Delete(id);
+            return Ok();
         }
     }
 }

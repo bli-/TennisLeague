@@ -7,5 +7,6 @@ namespace TennisLeague.API.Access
         Player? GetPlayerById(int id);
         IEnumerable<Player> GetAllPlayers();
         int? AddPlayer(Player player);
+        void Update(Player player);
     }
 }

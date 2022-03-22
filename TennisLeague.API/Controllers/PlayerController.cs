@@ -39,25 +39,25 @@ namespace TennisLeague.API.Controllers
             return NotFound();
         }
 
-        [HttpPut]
-        public ActionResult Put(Models.Player player)
+        [HttpPost]
+        public ActionResult Create(Models.Player playerDto)
         {
-            if (player is null || player.ID.HasValue)
+            if (playerDto is null || playerDto.ID.HasValue)
             {
-                return new BadRequestResult();
+                return BadRequest();
             }
 
-            var playerDb = _mapper.Map<Player>(player);
+            var playerDb = _mapper.Map<Player>(playerDto);
+            _playerRepository.AddPlayer(playerDb);
 
-            int? playerId;
-            try
-            {
-                playerId = _playerRepository.AddPlayer(playerDb);
-            } 
-            catch (Exception)
-            {
-                return new BadRequestObjectResult("Player could not be added");
-            }
+            return CreatedAtAction(nameof(Get), new { id = playerDb.ID }, playerDto);
+        }
+
+        [HttpPut()]
+        public ActionResult Edit(Models.Player playerDto)
+        {
+            var playerDb = _mapper.Map<Player>(playerDto);
+            _playerRepository.Update(playerDb);
 
             return Ok();
         }
