@@ -28,5 +28,21 @@ namespace TennisLeague.API.Access
         {
             return _context.Players.FirstOrDefault(z => z.ID == id);
         }
+
+        public void Update(Player player)
+        {
+            var match = _context.Players.FirstOrDefault(z => z.ID == player.ID);
+
+            if (match != null)
+            {
+                match.FirstName = player.FirstName;
+                match.LastName = player.LastName;
+                match.Email = player.Email;
+                match.Phone = player.Phone;
+                match.City = player.City;
+
+                _context.SaveChanges();
+            }
+        }
     }
 }
