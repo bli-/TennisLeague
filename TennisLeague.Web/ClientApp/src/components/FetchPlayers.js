@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getAllPlayers } from '../api/playerApi';
 
 export class FetchPlayers extends Component {
   static displayName = FetchPlayers.name;
@@ -62,7 +63,7 @@ export class FetchPlayers extends Component {
   async populatePlayers() {
     let response;
     try {
-      response = await fetch('player');
+      response = await getAllPlayers();
     }
     catch (e) {
       this.setState({error: "Data failed to load. Please try again later.", loading: false})

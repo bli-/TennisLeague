@@ -18,7 +18,7 @@ namespace TennisLeague.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public ActionResult<Models.Facility> Get(int id)
         {
             var facility = _facilityRepoistory.Get(id);
