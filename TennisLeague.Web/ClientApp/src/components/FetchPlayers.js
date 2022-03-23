@@ -70,7 +70,7 @@ export class FetchPlayers extends Component {
       return;
     }
     if (response.status >= 400 && response.status < 600) {
-      this.setState({error: "Data failed to load. Please try again later.", loading: false})
+      this.setState({error: "Server error. Please try again later.", loading: false})
       return;
     } 
 

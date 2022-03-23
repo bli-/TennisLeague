@@ -20,8 +20,9 @@ namespace TennisLeague.Data
         public string State { get; set; }
         [Required]
         public string Zip5 { get; set; }
+        public string? Phone { get; set; } = null;
+        public string? Email { get; set; } = null;
         [Required]
-        public int MaxPlayers { get; set; }
-        public decimal? Fee { get; set; } = null;
+        public int NumberOfCourts { get; set; }
     }
 }
