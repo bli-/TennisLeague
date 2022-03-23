@@ -1,24 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using TennisLeague.Web.Config;
 
 namespace TennisLeague.Web.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class FacilityController : ControllerBase
     {
         private readonly HttpClient _httpClient;
-        public FacilityController(IHttpClientFactory httpClientFactory)
+        private readonly string _baseUrl;
+
+        public FacilityController(IHttpClientFactory httpClientFactory, IOptions<ApiEndpointSettings> endpoints)
         {
             _httpClient = httpClientFactory.CreateClient();
+            _baseUrl = endpoints.Value.TennisLeagueApiBaseUrl;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var url = "https://localhost:7021/player";
+            var url = $"{_baseUrl}/facility";
             var response = await _httpClient.GetAsync(url);
 
             var responseBody = await response.Content.ReadAsStringAsync();
