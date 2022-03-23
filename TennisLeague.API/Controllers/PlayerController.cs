@@ -23,7 +23,7 @@ namespace TennisLeague.API.Controllers
         {
             var players = _playerRepository.GetAllPlayers();
 
-            return _mapper.Map<Models.Player>(players);
+            return Ok(players.Select(player => _mapper.Map<Models.Player>(player)));
         }
 
         [HttpGet("{id}")]
