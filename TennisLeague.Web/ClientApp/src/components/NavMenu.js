@@ -26,7 +26,7 @@ export class NavMenu extends Component {
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">Tennis League App</NavbarBrand>
+            <NavbarBrand tag={Link} to="/">Tennis League</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
@@ -36,7 +36,10 @@ export class NavMenu extends Component {
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem>
-                      <NavLink tag={Link} className="text-dark" to="/fetch-players">Fetch players</NavLink>
+                      <NavLink tag={Link} className="text-dark" to="/fetch-players">Players</NavLink>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <NavLink tag={Link} className="text-dark" to="/courts">Our Courts</NavLink>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>

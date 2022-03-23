@@ -1,6 +1,6 @@
 ﻿using TennisLeague.Data;
 
-namespace TennisLeague.API.Access
+namespace TennisLeague.DataAccess
 {
     public class PlayerRepository : IPlayerRepository
     {

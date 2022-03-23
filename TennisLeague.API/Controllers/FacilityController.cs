@@ -7,12 +7,12 @@ namespace TennisLeague.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class FaciltyController : ControllerBase
+    public class FacilityController : ControllerBase
     {
         private readonly IFacilityRepository _facilityRepoistory;
         private readonly IMapper _mapper;
 
-        public FaciltyController(IFacilityRepository facilityRepository, IMapper mapper)
+        public FacilityController(IFacilityRepository facilityRepository, IMapper mapper)
         {
             _facilityRepoistory = facilityRepository;
             _mapper = mapper;
@@ -59,7 +59,7 @@ namespace TennisLeague.API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             if (_facilityRepoistory.Get(id) == null)

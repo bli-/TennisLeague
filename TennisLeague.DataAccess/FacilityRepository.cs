@@ -35,7 +35,7 @@ namespace TennisLeague.DataAccess
 
         public IEnumerable<Facility> GetAll()
         {
-            return _context.Facilities;
+            return _context.Facilities.ToList();
         }
 
         public void Update(Facility facility)
@@ -50,8 +50,9 @@ namespace TennisLeague.DataAccess
                 match.City = facility.City;
                 match.State = facility.State;
                 match.Zip5 = facility.Zip5;
-                match.MaxPlayers = facility.MaxPlayers;
-                match.Fee = facility.Fee;
+                match.Phone = facility.Phone;
+                match.Email = facility.Email;
+                match.NumberOfCourts = facility.NumberOfCourts;
                 _context.SaveChanges();
             }
         }

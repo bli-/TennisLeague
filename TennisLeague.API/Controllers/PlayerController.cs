@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TennisLeague.API.Access;
+using TennisLeague.DataAccess;
 using TennisLeague.Data;
 
 namespace TennisLeague.API.Controllers
