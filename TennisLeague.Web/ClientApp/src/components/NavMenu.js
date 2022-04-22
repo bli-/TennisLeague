@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Collapse, Container, DropdownMenu, DropdownToggle, DropdownItem, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
+import { Collapse, Container, NavItem, Navbar, NavbarBrand, NavbarToggler, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 
@@ -24,29 +24,34 @@ export class NavMenu extends Component {
   render () {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+        <Navbar className="navbar-expand-lg navbar-toggleable-sm ng-white mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">Tennis League</NavbarBrand>
+            <NavbarBrand tag={Link} to="/">TENNIS<br/>LEAGUE</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex" isOpen={!this.state.collapsed} navbar>
-              <ul className="navbar-nav flex-grow">
-                <UncontrolledDropdown inNavbar nav>
-                  <DropdownToggle caret nav>
-                    Play
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem>
-                      <NavLink tag={Link} className="text-dark" to="/fetch-players">Players</NavLink>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <NavLink tag={Link} className="text-dark" to="/courts">Our Courts</NavLink>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
+            <Collapse className="d-lg-flex ps-lg-5" isOpen={!this.state.collapsed} navbar>
+              <ul className="navbar-nav flex-lg-grow-1 justify-content-lg-between">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Manage</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/">Leagues</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/">Schedule</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/courts">Courts</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/">Rules</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/">Contact</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/">Admin</NavLink>
                 </NavItem>
               </ul>
+              <div className="ps-lg-5 ">
+                <a href="/">Sign In</a> / <a href="/">Register</a>
+              </div>
             </Collapse>
           </Container>
         </Navbar>
