@@ -1,7 +1,19 @@
 ﻿a.navbar-brand {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  line-height: 1.6rem;
+  font-size: 1.8rem;
+}
+
+a.nav-link{
+  font-size:1.5rem;
+  font-weight: 600;
+}
+
+nav {
+  border-bottom: 2px solid red;
 }
 
 html {
