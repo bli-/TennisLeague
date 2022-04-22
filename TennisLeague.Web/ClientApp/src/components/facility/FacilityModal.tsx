@@ -1,7 +1,17 @@
-import React from 'react';
 import {Modal, ModalBody, ModalHeader, ModalFooter, Button, Form, Label, Input, FormGroup, Alert } from 'reactstrap';
+import { Facility } from './Facility';
 
-const FacilityModal = (props) => {
+type Props = {
+    facility: Facility,
+    isOpen: boolean,
+    toggleOpen: () => void,
+    submit: () => void,
+    errors: string[],
+    changeHandler: (key: string, value: any) => void,
+    modalMode: string
+}
+
+const FacilityModal = (props: Props) => {
     const { isOpen, toggleOpen, submit, errors, facility, changeHandler, modalMode } = props;
     
     const onFieldChange = (event) => 
@@ -58,7 +68,7 @@ const FacilityModal = (props) => {
                                 name="state"
                                 type="text" 
                                 value={facility.state}
-                                maxLength="2"
+                                maxLength={2}
                                 onChange={onFieldChange}
                             />
                         </FormGroup>
@@ -69,7 +79,7 @@ const FacilityModal = (props) => {
                                 name="zip"
                                 type="text" 
                                 value={facility.zip}
-                                maxLength="5"
+                                maxLength={5}
                                 onChange={onFieldChange}
                             />
                         </FormGroup>
@@ -86,7 +96,7 @@ const FacilityModal = (props) => {
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="secondary" onClick={() => toggleOpen(false)}>Cancel</Button>
+                    <Button color="secondary" onClick={() => toggleOpen()}>Cancel</Button>
                     <Button color="primary" onClick={() => submit()}>{modalMode} Facility</Button>{' '}
                 </ModalFooter>
             </Modal>

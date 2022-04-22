@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'reactstrap';
 import { getAllFacilities, createFacility, deleteFacility, updateFacility } from '../../api/facilityApi';
 import FacilityModal from './FacilityModal';
 import FacilitiesTable from './FacilitiesTable';
 import validateFacility from './facilityValidation';
 import  './Facilities.css';
+import { Facility } from './Facility';
 
 const Facilities = () => {
-    const NewFacilityTemplate = {
+    const NewFacilityTemplate: Facility = {
         name: '',
         addressLine1: '',
         city: '',
@@ -15,14 +16,14 @@ const Facilities = () => {
         zip: '',
         numberOfCourts: 0
     };
-    const [facilities, setFacilities] = useState([]);
+    const [facilities, setFacilities] = useState<Facility[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [fieldErrors, setSubmitErrors] = useState([]);
+    const [error, setError] = useState<string>(null);
+    const [fieldErrors, setSubmitErrors] = useState<string[]>([]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [facility, setFacility] = useState(NewFacilityTemplate);
-    const [modalMode, setModalMode] = useState('Add');
+    const [modalMode, setModalMode] = useState<string>('Add');
 
     useEffect(() => {
         populateFacilities();
@@ -34,22 +35,16 @@ const Facilities = () => {
     }
 
     const populateFacilities = async () => {
-        let response;
+        let facilities: Facility[];
         try {
-            response = await getAllFacilities();
+            facilities = await getAllFacilities();
         } catch(e) {
             setError("Server error. Please try again later.");
             setLoading(false);
-        }
-        
-        if (!response || (response.status >= 400 && response.status < 600)) {
-            setError("Server error. Please try again later.");
-            setLoading(false);
             return;
-        } 
-  
-        const data = await response.json();
-        setFacilities(data);
+        }
+
+        setFacilities(facilities);
         setLoading(false);
     }
 
@@ -62,35 +57,36 @@ const Facilities = () => {
             setSubmitErrors([])
         }
 
-        let response;
+        let createdFacility: Facility;
         let submitErrorMessage = "Server error";
-        if (modalMode === 'Add') {
-            response = await createFacility(facility);
-            submitErrorMessage = "Server error when creating facility";
-        }
-        else if (modalMode === "Edit") {
-            response = await updateFacility(facility);
-            submitErrorMessage = "Server error when updating facility";
-        }
-
-        if (response.status <= 299) {
-            setSubmitErrors([]);
-            setRefresh(true);
-            setFacility(NewFacilityTemplate);
-            toggleModal();
-        } else {
+        try {
+            if (modalMode === 'Add') {
+                submitErrorMessage = "Server error when creating facility";
+                createdFacility = await createFacility(facility);
+            } else if (modalMode === "Edit") {
+                submitErrorMessage = "Server error when updating facility";
+                await updateFacility(facility);
+            }
+        } catch (e) {
             setSubmitErrors([submitErrorMessage]);
-        }
+            return;
+        }        
+
+        setSubmitErrors([]);
+        setRefresh(true);
+        setFacility(NewFacilityTemplate);
+        toggleModal();
     }
 
-    const onDeleteClick = async (id) => {
-        let response = await deleteFacility(id);
-
-        if (response.status <= 299) {
-            setRefresh(true);
-        } else {
+    const onDeleteClick = async (id: number) => {
+        try {
+            await deleteFacility(id);
+        } catch (e) {
             setSubmitErrors(["Server error when deleting facility"]);
+            return;
         }
+
+        setRefresh(true);
     }
 
     const onAddClick = () => {
@@ -100,14 +96,14 @@ const Facilities = () => {
         toggleModal();
     }
 
-    const onEditClick = (id) => {
+    const onEditClick = (id: number) => {
         setModalMode('Edit');
         setSubmitErrors([]);
         setFacility(facilities.find(f => f.id === id));
         toggleModal();
     }
 
-    const changeHandler = (key, value) => {
+    const changeHandler = (key:string, value:any) => {
         setFacility(prevState => ({
             ...prevState,
             [key]: value
