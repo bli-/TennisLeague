@@ -1,4 +1,6 @@
-export default function validateFacility (facility) {
+import { Facility } from "./Facility";
+
+export default function validateFacility (facility: Facility) {
     var errors = [];
     if (!facility.name) {
         errors.push("Name required");
@@ -20,9 +22,7 @@ export default function validateFacility (facility) {
 
     if (!facility.zip) {
         errors.push("Zip required");
-    } else if (isNaN(facility.zip)) {
-        errors.push("Zip code must be numeric");
-    } else if (facility.zip.length !== 5 || facility.zip < 0 || facility.zip > 99999) {
+    } else if (facility.zip.length !== 5 || facility.zip < '00000' || facility.zip > '99999') {
         errors.push("Zip Code must be between 00000 and 99999");
     }
 

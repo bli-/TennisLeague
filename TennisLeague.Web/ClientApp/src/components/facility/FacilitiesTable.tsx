@@ -1,6 +1,13 @@
 import { Button } from 'reactstrap';
+import { Facility } from './Facility';
 
-const FacilitiesTable = (props) => {
+type Props = {
+    facilities: Facility[],
+    onDeleteClick: (id: number) => void,
+    onEditClick: (id: number) => void
+}
+
+const FacilitiesTable = (props: Props) => {
     const { facilities, onDeleteClick, onEditClick } = props;
     
     return (
