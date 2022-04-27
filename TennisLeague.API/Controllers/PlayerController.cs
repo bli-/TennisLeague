@@ -9,27 +9,27 @@ namespace TennisLeague.API.Controllers
     [ApiController]
     public class PlayerController: ControllerBase
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly PlayerRepository _playerRepository;
         private readonly IMapper _mapper;
 
-        public PlayerController(IPlayerRepository playerRepository, IMapper mapper)
+        public PlayerController(PlayerRepository playerRepository, IMapper mapper)
         {
             _playerRepository = playerRepository;
             _mapper = mapper;
         }
 
         [HttpGet()]
-        public ActionResult<Models.Player> GetAll()
+        public async Task<ActionResult<Models.Player>> GetAll()
         {
-            var players = _playerRepository.GetAllPlayers();
+            var players = await _playerRepository.GetAll();
 
             return Ok(players.Select(player => _mapper.Map<Models.Player>(player)));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Models.Player> Get(int id)
+        public async Task<ActionResult<Models.Player>> Get(int id)
         {
-            var player = _playerRepository.GetPlayerById(id);
+            var player = await _playerRepository.GetById(id);
 
             if (player != null)
             {
@@ -40,7 +40,7 @@ namespace TennisLeague.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Models.Player playerDto)
+        public async Task<ActionResult> Create(Models.Player playerDto)
         {
             if (playerDto is null || playerDto.ID.HasValue)
             {
@@ -48,16 +48,16 @@ namespace TennisLeague.API.Controllers
             }
 
             var playerDb = _mapper.Map<Player>(playerDto);
-            _playerRepository.AddPlayer(playerDb);
+            playerDb = await _playerRepository.Create(playerDb);
 
             return CreatedAtAction(nameof(Get), new { id = playerDb.ID }, playerDto);
         }
 
         [HttpPut()]
-        public ActionResult Edit(Models.Player playerDto)
+        public async Task<ActionResult> Edit(Models.Player playerDto)
         {
             var playerDb = _mapper.Map<Player>(playerDto);
-            _playerRepository.Update(playerDb);
+            await _playerRepository.Update(playerDb);
 
             return Ok();
         }
