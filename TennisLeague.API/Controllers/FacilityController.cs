@@ -9,19 +9,19 @@ namespace TennisLeague.API.Controllers
     [ApiController]
     public class FacilityController : ControllerBase
     {
-        private readonly IFacilityRepository _facilityRepoistory;
+        private readonly FacilityRepository _facilityRepoistory;
         private readonly IMapper _mapper;
 
-        public FacilityController(IFacilityRepository facilityRepository, IMapper mapper)
+        public FacilityController(FacilityRepository facilityRepository, IMapper mapper)
         {
             _facilityRepoistory = facilityRepository;
             _mapper = mapper;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Models.Facility> Get(int id)
+        public async Task<ActionResult<Models.Facility>> Get(int id)
         {
-            var facility = _facilityRepoistory.Get(id);
+            var facility = await _facilityRepoistory.GetById(id);
 
             if (facility is null) return new NotFoundResult();
 
@@ -29,15 +29,15 @@ namespace TennisLeague.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Models.Facility>> GetAll()
+        public async Task<ActionResult<IEnumerable<Models.Facility>>> GetAll()
         {
-            var facilities = _facilityRepoistory.GetAll();
+            var facilities = await _facilityRepoistory.GetAll();
 
             return Ok(facilities.Select(f => _mapper.Map<Models.Facility>(f)));
         }
 
         [HttpPost()]
-        public ActionResult<Models.Facility> Create(Models.Facility facilityDto)
+        public async Task<ActionResult<Models.Facility>> Create(Models.Facility facilityDto)
         {
             if (facilityDto is null || facilityDto.ID.HasValue)
             {
@@ -45,29 +45,29 @@ namespace TennisLeague.API.Controllers
             }
 
             var facilityDb = _mapper.Map<Facility>(facilityDto);
-            _facilityRepoistory.Add(facilityDb);
+            facilityDb = await _facilityRepoistory.Create(facilityDb);
 
             return CreatedAtAction(nameof(Get), new { id = facilityDb.ID }, facilityDto);
         }
 
         [HttpPut()]
-        public ActionResult Edit(Models.Facility facilityDto)
+        public async Task<ActionResult> Edit(Models.Facility facilityDto)
         {
             var facilityDb = _mapper.Map<Facility>(facilityDto);
-            _facilityRepoistory.Update(facilityDb);
+            _ = await _facilityRepoistory.Update(facilityDb);
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            if (_facilityRepoistory.Get(id) == null)
+            var result = await _facilityRepoistory.Delete(id);
+
+            if (result == null)
             {
                 return BadRequest($"Facility ID {id} not found");
             }
-
-            _facilityRepoistory.Delete(id);
             return Ok();
         }
     }

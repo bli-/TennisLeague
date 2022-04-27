@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TennisLeague.Data
 {
     [Table("Player")]
-    public class Player
+    public class Player : IEntity
     {
         [Key]
         public int ID { get; set; }

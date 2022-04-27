@@ -16,8 +16,8 @@ builder.Services.AddAutoMapper(typeof(TennisLeagueProfile));
 var connectionString = builder.Configuration.GetConnectionString("AppDb");
 
 builder.Services.AddDbContext<DataContext>(z => z.UseSqlServer(connectionString));
-builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
+builder.Services.AddScoped<PlayerRepository>();
+builder.Services.AddScoped<FacilityRepository>();
 
 builder.Services.AddCors(options =>
 {
