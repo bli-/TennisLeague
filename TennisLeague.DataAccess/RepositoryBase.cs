@@ -14,14 +14,14 @@ namespace TennisLeague.DataAccess
             _context = context;
         }
 
-        public async Task<TEntity> Create(TEntity entity)
+        public virtual async Task<TEntity> Create(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task<TEntity?> Delete(int id)
+        public virtual async Task<TEntity?> Delete(int id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
 
@@ -35,17 +35,17 @@ namespace TennisLeague.DataAccess
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity?> GetById(int id)
+        public virtual async Task<TEntity?> GetById(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity> Update(TEntity entity)
+        public virtual async Task<TEntity> Update(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();

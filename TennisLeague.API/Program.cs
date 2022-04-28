@@ -18,6 +18,8 @@ var connectionString = builder.Configuration.GetConnectionString("AppDb");
 builder.Services.AddDbContext<DataContext>(z => z.UseSqlServer(connectionString));
 builder.Services.AddScoped<PlayerRepository>();
 builder.Services.AddScoped<FacilityRepository>();
+builder.Services.AddScoped<SeasonRepository>();
+builder.Services.AddScoped<SessionRepository>();
 
 builder.Services.AddCors(options =>
 {

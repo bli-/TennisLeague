@@ -10,7 +10,7 @@ namespace TennisLeague.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         [Required]
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; } = null!;
         [Required]
         public DateTime StartDate { get; set; }
         [Required]
