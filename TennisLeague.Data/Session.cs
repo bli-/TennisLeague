@@ -12,7 +12,7 @@ namespace TennisLeague.Data
         [Required]
         public DateTime MatchStart { get; set; } = DateTime.Now;
         [Required]
-        public string Gender { get; set; } = string.Empty;
+        public string Gender { get; set; } = null!;
         [Required]
         public int SeasonID { get; set; }
         [Required]
@@ -23,5 +23,6 @@ namespace TennisLeague.Data
         public Season? Season { get; set; }
         public Rating? Rating { get; set; }
         public MatchType? MatchType { get; set; }
+        public IList<SessionFacility>? Facilities { get; set; }
     }
 }

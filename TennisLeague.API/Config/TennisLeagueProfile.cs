@@ -14,6 +14,13 @@ namespace TennisLeague.API.Config
 
             CreateMap<Player, Models.Player>();
             CreateMap<Models.Player, Player>();
+
+            CreateMap<Season, Models.Season>();
+            CreateMap<Models.Season, Season>();
+
+            CreateMap<Session, Models.Session>();
+            CreateMap<Models.Session, Session>()
+                .ForSourceMember(source => source.AvailableFacilityIDs, opt => opt.DoNotValidate());
         }
     }
 }
