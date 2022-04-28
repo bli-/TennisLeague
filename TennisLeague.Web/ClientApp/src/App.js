@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchPlayers } from './components/FetchPlayers';
 import Facilities from './components/facility/Facilities';
+import Admin from './components/admin/Admin';
 
 import './custom.css'
 
@@ -16,6 +17,7 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/fetch-players' component={FetchPlayers} />
         <Route path='/courts' component={Facilities} />
+        <Route path='/admin' component={Admin} />
       </Layout>
     );
   }

@@ -57,12 +57,11 @@ const Facilities = () => {
             setSubmitErrors([])
         }
 
-        let createdFacility: Facility;
         let submitErrorMessage = "Server error";
         try {
             if (modalMode === 'Add') {
                 submitErrorMessage = "Server error when creating facility";
-                createdFacility = await createFacility(facility);
+                await createFacility(facility);
             } else if (modalMode === "Edit") {
                 submitErrorMessage = "Server error when updating facility";
                 await updateFacility(facility);
@@ -110,7 +109,7 @@ const Facilities = () => {
         }));
     }
     
-    let contents;
+    let contents: JSX.Element;
 
     if (loading) {
         contents = <p><em>Loading...</em></p>
