@@ -1,4 +1,4 @@
-import { Season } from "../components/admin/Season";
+import { Season } from "../models/Season";
 import { apiDelete, create, getAll, getById, update } from "./baseApi";
 
 export async function getAllSeasons(): Promise<Season[]> {

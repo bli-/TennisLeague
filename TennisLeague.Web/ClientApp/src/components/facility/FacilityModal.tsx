@@ -1,5 +1,5 @@
 import {Modal, ModalBody, ModalHeader, ModalFooter, Button, Form, Label, Input, FormGroup, Alert } from 'reactstrap';
-import { Facility } from './Facility';
+import { Facility } from '../../models/Facility';
 
 type Props = {
     facility: Facility,

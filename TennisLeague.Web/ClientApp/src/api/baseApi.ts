@@ -65,3 +65,13 @@ export async function getById<Type>(url: string, id: number): Promise<Type> {
 
     return response.json() as Promise<Type>;
 }
+
+export async function get<Type>(url: string): Promise<Type> {
+    var response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(response.statusText); 
+    }
+
+    return response.json() as Promise<Type>;
+}

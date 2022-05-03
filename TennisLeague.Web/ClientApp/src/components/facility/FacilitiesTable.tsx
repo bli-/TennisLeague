@@ -1,5 +1,5 @@
-import { Button } from 'reactstrap';
-import { Facility } from './Facility';
+import { Button, Table } from 'reactstrap';
+import { Facility } from '../../models/Facility';
 
 type Props = {
     facilities: Facility[],
@@ -11,7 +11,7 @@ const FacilitiesTable = (props: Props) => {
     const { facilities, onDeleteClick, onEditClick } = props;
     
     return (
-        <table className='table table-striped'>
+        <Table striped>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -33,7 +33,7 @@ const FacilitiesTable = (props: Props) => {
                     </tr>
                 )}
             </tbody>
-        </table>
+        </Table>
     );
 }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TennisLeague.Data;
+using TennisLeague.DataAccess.Models;
 
 namespace TennisLeague.API.Config
 {
@@ -21,6 +22,10 @@ namespace TennisLeague.API.Config
             CreateMap<Session, Models.Session>();
             CreateMap<Models.Session, Session>()
                 .ForSourceMember(source => source.AvailableFacilityIDs, opt => opt.DoNotValidate());
+
+            CreateMap<SessionAttributes, Models.SessionAttributes>();
+            CreateMap<Data.MatchType, Models.MatchType>();
+            CreateMap<Rating, Models.Rating>();
         }
     }
 }

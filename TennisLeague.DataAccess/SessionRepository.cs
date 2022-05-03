@@ -24,6 +24,11 @@ namespace TennisLeague.DataAccess
             return session;
         }
 
+        public async Task<IEnumerable<Session>> GetBySeasonId(int seasonId)
+        {
+            return await _context.Sessions.Include(s => s.Facilities).Where(s => s.SeasonID == seasonId).ToListAsync();
+        }
+
         public async Task<SessionAttributes> GetSessionAttributes()
         {
             var matchTypesTask = _context.MatchTypes.ToListAsync();

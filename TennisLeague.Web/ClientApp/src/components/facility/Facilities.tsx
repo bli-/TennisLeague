@@ -5,7 +5,7 @@ import FacilityModal from './FacilityModal';
 import FacilitiesTable from './FacilitiesTable';
 import validateFacility from './facilityValidation';
 import  './Facilities.css';
-import { Facility } from './Facility';
+import { Facility } from '../../models/Facility';
 
 const Facilities = () => {
     const NewFacilityTemplate: Facility = {
