@@ -1,4 +1,4 @@
-import { Facility } from "../components/facility/Facility";
+import { Facility } from "../models/Facility";
 import { getAll, create, apiDelete, update } from "./baseApi";
 
 export async function getAllFacilities(): Promise<Facility[]> {

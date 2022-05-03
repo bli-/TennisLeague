@@ -1,4 +1,4 @@
-import { Facility } from "./Facility";
+import { Facility } from "../../models/Facility";
 
 export default function validateFacility (facility: Facility) {
     var errors = [];

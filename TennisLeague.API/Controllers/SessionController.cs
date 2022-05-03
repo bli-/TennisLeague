@@ -21,14 +21,14 @@ namespace TennisLeague.API.Controllers
         }
 
         [HttpGet()]
-        public async Task<ActionResult<Models.Session>> GetAll()
+        public async Task<ActionResult<IEnumerable<Models.Session>>> GetAll()
         {
             var sessions = await _sessionRepository.GetAll();
 
             return Ok(sessions.Select(session => _mapper.Map<Models.Session>(session)));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Models.Session>> Get(int id)
         {
             var session = await _sessionRepository.GetById(id);
@@ -39,6 +39,14 @@ namespace TennisLeague.API.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet("season/{seasonId:int}")]
+        public async Task<ActionResult<IEnumerable<Models.Session>>> GetBySeasonId(int seasonId)
+        {
+            var sessions = await _sessionRepository.GetBySeasonId(seasonId);
+
+            return Ok(sessions.Select(session => _mapper.Map<Models.Session>(session)));
         }
 
         [HttpPost()]
@@ -71,6 +79,14 @@ namespace TennisLeague.API.Controllers
             var sessionDb = _mapper.Map<Session>(sessionDto);
             await _sessionRepository.Update(sessionDb);
             return Ok();
+        }
+
+        [HttpGet("attributes")]
+        public async Task<ActionResult<Models.SessionAttributes>> GetSessionAttributes()
+        {
+            var attributes = await _sessionRepository.GetSessionAttributes();
+
+            return Ok(_mapper.Map<Models.SessionAttributes>(attributes));
         }
     }
 }
