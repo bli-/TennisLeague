@@ -31,25 +31,18 @@ namespace TennisLeague.DataAccess
 
         public async Task<SessionAttributes> GetSessionAttributes()
         {
-            var matchTypesTask = _context.MatchTypes.ToListAsync();
-            var ratingsTask = _context.Ratings.ToListAsync();
-
-            await Task.WhenAll(matchTypesTask, ratingsTask);
+            var matchTypes = await _context.MatchTypes.ToListAsync();
+            var ratings = await _context.Ratings.ToListAsync();
 
             return new SessionAttributes
             {
-                MatchTypes = matchTypesTask.Result,
-                Ratings = ratingsTask.Result
+                MatchTypes = matchTypes,
+                Ratings = ratings
             };
         }
 
-        public async Task<IEnumerable<SessionFacility>> UpdateSessionFacilities(int sessionId, IEnumerable<int> facilityIds)
+        public async Task UpdateSessionFacilities(int sessionId, IEnumerable<int> facilityIds)
         {
-            if (!facilityIds.Any())
-            {
-                throw new ArgumentException("At least one facility ID is required to update session facilities");
-            }
-
             var session = _context.Sessions.Include(s => s.Facilities).FirstOrDefault(s => s.ID == sessionId);
 
             if (session is null)
@@ -63,15 +56,17 @@ namespace TennisLeague.DataAccess
                 await _context.SaveChangesAsync();
             }
 
-            var updatedFacilities = facilityIds.Select(facilityId => new SessionFacility
+            if (facilityIds.Any())
             {
-                SessionID = sessionId,
-                FacilityID = facilityId
-            });
-            _context.SessionFacilities.AddRange(updatedFacilities);
-            await _context.SaveChangesAsync();
+                var updatedFacilities = facilityIds.Select(facilityId => new SessionFacility
+                {
+                    SessionID = sessionId,
+                    FacilityID = facilityId
+                });
+                _context.SessionFacilities.AddRange(updatedFacilities);
+            }
 
-            return updatedFacilities;
+            await _context.SaveChangesAsync();
         }
     }
 }

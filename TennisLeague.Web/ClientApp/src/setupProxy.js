@@ -8,7 +8,8 @@ const context =  [
   "/player",
   "/facility",
   "/season",
-  "/session"
+  "/session",
+  "/seasonOfYear"
 ];
 
 module.exports = function(app) {

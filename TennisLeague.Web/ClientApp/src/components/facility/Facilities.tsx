@@ -1,28 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'reactstrap';
 import { getAllFacilities, createFacility, deleteFacility, updateFacility } from '../../api/facilityApi';
-import FacilityModal from './FacilityModal';
 import FacilitiesTable from './FacilitiesTable';
 import validateFacility from './facilityValidation';
 import  './Facilities.css';
 import { Facility } from '../../models/Facility';
+import ModalTemplate from '../shared/ModalTemplate';
+import FacilityEntryForm from './FacilityEntryForm';
 
 const Facilities = () => {
-    const NewFacilityTemplate: Facility = {
-        name: '',
-        addressLine1: '',
-        city: '',
-        state: '',
-        zip: '',
-        numberOfCourts: 0
-    };
     const [facilities, setFacilities] = useState<Facility[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>(null);
     const [fieldErrors, setSubmitErrors] = useState<string[]>([]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [refresh, setRefresh] = useState(false);
-    const [facility, setFacility] = useState(NewFacilityTemplate);
+    const [facility, setFacility] = useState(new Facility());
     const [modalMode, setModalMode] = useState<string>('Add');
 
     useEffect(() => {
@@ -73,7 +66,7 @@ const Facilities = () => {
 
         setSubmitErrors([]);
         setRefresh(true);
-        setFacility(NewFacilityTemplate);
+        setFacility(new Facility());
         toggleModal();
     }
 
@@ -91,7 +84,7 @@ const Facilities = () => {
     const onAddClick = () => {
         setModalMode('Add');
         setSubmitErrors([]);
-        setFacility(NewFacilityTemplate);
+        setFacility(new Facility());
         toggleModal();
     }
 
@@ -108,6 +101,15 @@ const Facilities = () => {
             [key]: value
         }));
     }
+
+    const CreateFacilityEntryForm = (): JSX.Element => {
+        return <FacilityEntryForm 
+                    submit={submit} 
+                    errors={fieldErrors} 
+                    facility={facility} 
+                    changeHandler={changeHandler}
+                />
+    }
     
     let contents: JSX.Element;
 
@@ -123,14 +125,13 @@ const Facilities = () => {
 
     return (
         <>
-            <FacilityModal 
+            <ModalTemplate
                 isOpen={isModalOpen} 
-                toggleOpen={toggleModal} 
                 submit={submit} 
-                errors={fieldErrors} 
-                facility={facility} 
-                changeHandler={changeHandler}
-                modalMode={modalMode}
+                headerText={`${modalMode} Tennis Court`}
+                submitButtonText={`${modalMode} Facility`}
+                toggleOpen={toggleModal}
+                content={CreateFacilityEntryForm()}
             />
             <div className="split">
                 <h1 id="courtLabel">The Courts</h1>
