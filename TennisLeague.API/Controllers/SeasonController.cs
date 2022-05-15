@@ -19,46 +19,55 @@ namespace TennisLeague.API.Controllers
         }
 
         [HttpGet()]
-        public async Task<ActionResult<Models.Season>> GetAll()
+        public async Task<ActionResult<Models.LeagueSeason>> GetAll()
         {
             var seasons = await _seasonRepository.GetAll();
 
-            return Ok(seasons.Select(season => _mapper.Map<Models.Season>(season)));
+            return Ok(seasons.Select(season => _mapper.Map<Models.LeagueSeason>(season)));
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Season>> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Models.LeagueSeason>> Get(int id)
         {
             var season = await _seasonRepository.GetById(id);
 
             if (season != null)
             {
-                return _mapper.Map<Models.Season>(season);
+                return _mapper.Map<Models.LeagueSeason>(season);
             }
 
             return NotFound();
         }
 
         [HttpPost()]
-        public async Task<ActionResult> Create(Models.Season seasonDto)
+        public async Task<ActionResult> Create(Models.LeagueSeason seasonDto)
         {
             if (seasonDto is null || seasonDto.ID.HasValue)
             {
                 return BadRequest();
             }
 
-            var seasonDb = _mapper.Map<Season>(seasonDto);
+            var seasonDb = _mapper.Map<LeagueSeason>(seasonDto);
             seasonDb = await _seasonRepository.Create(seasonDb);
 
             return CreatedAtAction(nameof(Get), new { id = seasonDb.ID }, seasonDto);
         }
 
         [HttpPut()]
-        public async Task<ActionResult> Edit(Models.Season seasonDto)
+        public async Task<ActionResult> Edit(Models.LeagueSeason seasonDto)
         {
-            var seasonDb = _mapper.Map<Season>(seasonDto);
+            var seasonDb = _mapper.Map<LeagueSeason>(seasonDto);
             await _seasonRepository.Update(seasonDb);
             return Ok();
+        }
+
+        [HttpGet("/seasonsOfYear")]
+        public async Task<ActionResult<Models.Season>> GetAllSeasonsOfYear()
+        {
+            var seasons = await _seasonRepository.GetSeasonsOfYear();
+            var ret = seasons.Select(season => _mapper.Map<Models.Season>(season));
+
+            return Ok(ret);
         }
     }
 }

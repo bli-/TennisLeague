@@ -2,8 +2,8 @@ export class Session {
     id?: number;
     matchStart: Date;
     gender: string;
-    seasonId: number;
-    ratingId: number;
-    matchTypeId: number;
-    availableFacilityIds: number[];
+    seasonID: number;
+    ratingID: number;
+    matchTypeID: number;
+    availableFacilityIDs: number[];
 }

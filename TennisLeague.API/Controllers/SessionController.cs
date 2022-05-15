@@ -33,12 +33,12 @@ namespace TennisLeague.API.Controllers
         {
             var session = await _sessionRepository.GetById(id);
 
-            if (session != null)
+            if (session == null)
             {
-                return _mapper.Map<Models.Session>(session);
+                return NotFound();
             }
 
-            return NotFound();
+            return _mapper.Map<Models.Session>(session);
         }
 
         [HttpGet("season/{seasonId:int}")]
@@ -57,18 +57,17 @@ namespace TennisLeague.API.Controllers
                 return BadRequest();
             }
 
-            var facilityIds = sessionDto.AvailableFacilityIDs;
-            var facilityTasks = facilityIds.Select(f => _faciltyRepository.GetById(f));
-            var results = await Task.WhenAll(facilityTasks);
-            if (results.Any(result => result is null))
+            var facilities = await _faciltyRepository.GetByIds(sessionDto.AvailableFacilityIDs);
+            var invalidfacilityIds = sessionDto.AvailableFacilityIDs.Except(facilities.Select(f => f.ID));
+            if (invalidfacilityIds.Any())
             {
-                return BadRequest("Invalid facility selection(s)");
+                return BadRequest($"Invalid facility ID(s): {string.Join(',', invalidfacilityIds)}");
             }
 
             var sessionDb = _mapper.Map<Session>(sessionDto);
             sessionDb = await _sessionRepository.Create(sessionDb);
 
-            var sessionFacilities = await _sessionRepository.UpdateSessionFacilities(sessionDb.ID, facilityIds);
+            await _sessionRepository.UpdateSessionFacilities(sessionDb.ID, sessionDto.AvailableFacilityIDs);
 
             return CreatedAtAction(nameof(Get), new { id = sessionDb.ID }, sessionDto);
         }
@@ -87,6 +86,19 @@ namespace TennisLeague.API.Controllers
             var attributes = await _sessionRepository.GetSessionAttributes();
 
             return Ok(_mapper.Map<Models.SessionAttributes>(attributes));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            await _sessionRepository.UpdateSessionFacilities(id, Enumerable.Empty<int>());
+            var result = await _sessionRepository.Delete(id);
+
+            if (result == null)
+            {
+                return BadRequest($"Session ID {id} not found");
+            }
+            return Ok();
         }
     }
 }
