@@ -2,7 +2,7 @@
 
 ## Work in Progress!
 
-This is an ongoing project and is not yet done.  As of today (6/1/2022), I only have "Court" and "Admin" pages working
+This is an ongoing project.  As of today (6/1/2022), I only have "Court" and "Admin" pages working
 
 ## What is this project?
 
