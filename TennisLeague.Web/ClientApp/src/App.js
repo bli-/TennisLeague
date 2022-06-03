@@ -5,6 +5,8 @@ import { Home } from './components/Home';
 import { FetchPlayers } from './components/FetchPlayers';
 import Facilities from './components/facility/Facilities';
 import Admin from './components/admin/Admin';
+import Rules from './components/rules/rules';
+import About from './components/about/about';
 
 import './custom.css'
 
@@ -18,6 +20,8 @@ export default class App extends Component {
         <Route path='/fetch-players' component={FetchPlayers} />
         <Route path='/courts' component={Facilities} />
         <Route path='/admin' component={Admin} />
+        <Route path='/rules' component={Rules} />
+        <Route path='/about' component={About} />
       </Layout>
     );
   }
