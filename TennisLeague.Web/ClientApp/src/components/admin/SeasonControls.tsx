@@ -64,8 +64,6 @@ const SeasonControls = (props: Props) => {
         populateSeasonsOfYear();
     }, [setError, setLoading])
 
-    
-
     const onSeasonSelect = (id: number) => {
         const season = seasons.find(s => s.id === id);
         setSelectedSeason(season);
