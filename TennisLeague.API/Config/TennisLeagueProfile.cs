@@ -17,6 +17,7 @@ namespace TennisLeague.API.Config
             CreateMap<Models.Player, Player>();
 
             CreateMap<Season, Models.Season>();
+            CreateMap<LeagueSeasonStatus, Models.LeagueSeasonStatus>();
 
             CreateMap<LeagueSeason, Models.LeagueSeason>();
             CreateMap<Models.LeagueSeason, LeagueSeason>()
@@ -29,8 +30,11 @@ namespace TennisLeague.API.Config
                 .ForMember(dest => dest.MatchStart, opt => opt.MapFrom(src => src.MatchStart.ToLocalTime()));
 
             CreateMap<SessionAttributes, Models.SessionAttributes>();
+            CreateMap<SeasonAttributes, Models.SeasonAttributes>();
             CreateMap<Data.MatchType, Models.MatchType>();
             CreateMap<Rating, Models.Rating>();
+
+            CreateMap<Models.SeasonFilter, SeasonFilter>();
         }
     }
 }

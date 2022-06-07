@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TennisLeague.Data;
+using TennisLeague.DataAccess.Models;
 
 namespace TennisLeague.DataAccess
 {
@@ -11,9 +12,28 @@ namespace TennisLeague.DataAccess
             _context = context;
         }
 
-        public async Task<IEnumerable<Season>> GetSeasonsOfYear()
+        public async Task<SeasonAttributes> GetSeasonAttributes()
         {
-            return await _context.Seasons.ToListAsync();
+            var seasonsOfYear = await _context.Seasons.ToListAsync();
+            var statuses = await _context.LeagueSeasonStatuses.ToListAsync();
+
+            return new SeasonAttributes
+            {
+                Seasons = seasonsOfYear,
+                Statuses = statuses
+            };
+        }
+
+        public async Task<IEnumerable<LeagueSeason>> GetAll(SeasonFilter filter)
+        {
+            var query = _context.LeagueSeasons.AsQueryable();
+
+            if (filter.StatusID.HasValue)
+            {
+                query = query.Where(z => z.Status == filter.StatusID);
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

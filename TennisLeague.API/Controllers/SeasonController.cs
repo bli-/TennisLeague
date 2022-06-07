@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TennisLeague.Data;
+using TennisLeague.API.Models;
 using TennisLeague.DataAccess;
+using LeagueSeason = TennisLeague.Data.LeagueSeason;
 
 namespace TennisLeague.API.Controllers
 {
@@ -17,11 +18,12 @@ namespace TennisLeague.API.Controllers
             _seasonRepository = seasonRepository;
             _mapper = mapper;
         }
-
-        [HttpGet()]
-        public async Task<ActionResult<Models.LeagueSeason>> GetAll()
+        
+        [HttpGet]
+        public async Task<ActionResult<Models.LeagueSeason>> Get([FromQuery] SeasonFilter filterDto)
         {
-            var seasons = await _seasonRepository.GetAll();
+            var filter = _mapper.Map<DataAccess.Models.SeasonFilter>(filterDto);
+            var seasons = await _seasonRepository.GetAll(filter);
 
             return Ok(seasons.Select(season => _mapper.Map<Models.LeagueSeason>(season)));
         }
@@ -61,13 +63,12 @@ namespace TennisLeague.API.Controllers
             return Ok();
         }
 
-        [HttpGet("/seasonsOfYear")]
-        public async Task<ActionResult<Models.Season>> GetAllSeasonsOfYear()
+        [HttpGet("attributes")]
+        public async Task<ActionResult<Models.SeasonAttributes>> GetSeasonAttributes()
         {
-            var seasons = await _seasonRepository.GetSeasonsOfYear();
-            var ret = seasons.Select(season => _mapper.Map<Models.Season>(season));
+            var attributes = await _seasonRepository.GetSeasonAttributes();
 
-            return Ok(ret);
+            return Ok(_mapper.Map<Models.SeasonAttributes>(attributes));
         }
     }
 }

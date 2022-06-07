@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Collapse, Container, NavItem, Navbar, NavbarBrand, NavbarToggler, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
@@ -31,7 +31,7 @@ export class NavMenu extends Component {
             <Collapse className="d-lg-flex ps-lg-5" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-lg-grow-1 justify-content-lg-between">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Leagues</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/leagues">Leagues</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Schedule</NavLink>
