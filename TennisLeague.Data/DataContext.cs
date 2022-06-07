@@ -12,6 +12,7 @@ namespace TennisLeague.Data
         public DbSet<Season> Seasons { get; set; } = null!;
         public DbSet<Session> Sessions { get; set; } = null!;
         public DbSet<SessionFacility> SessionFacilities { get; set; } = null!;
+        public DbSet<LeagueSeasonStatus> LeagueSeasonStatuses { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {

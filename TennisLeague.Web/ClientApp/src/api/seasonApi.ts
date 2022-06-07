@@ -1,9 +1,16 @@
 import { LeagueSeason } from "../models/LeagueSeason";
-import { Season } from "../models/Season";
-import { apiDelete, create, getAll, getById, update } from "./baseApi";
+import { SeasonAttributes } from "../models/SeasonAttributes";
+import { SeasonFilter } from "../models/SeasonFilter";
+import { apiDelete, create, get, getAll, getById, update } from "./baseApi";
 
-export async function getAllSeasons(): Promise<LeagueSeason[]> {
-    var response = await getAll<LeagueSeason>("/season");
+export async function getSeasons(filter: SeasonFilter = null): Promise<LeagueSeason[]> {
+    let queryUrl = "/season?";
+
+    if (filter?.statusId) {
+        queryUrl += `statusId=${filter.statusId}`;
+    }
+
+    var response = await getAll<LeagueSeason>(queryUrl);
     return response.map(season => fixLeagueSeasonDates(season));
 }
 
@@ -25,8 +32,8 @@ export async function getSeasonById(id: number): Promise<LeagueSeason> {
     return fixLeagueSeasonDates(response);
 }
 
-export async function getSeasonsOfTheYear(): Promise<Season[]> {
-    return await getAll<Season>("/seasonsOfYear");
+export async function getSeasonAttributes(): Promise<SeasonAttributes> {
+    return await get<SeasonAttributes>("/season/attributes");
 }
 
 function fixLeagueSeasonDates(season: LeagueSeason): LeagueSeason {

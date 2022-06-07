@@ -17,7 +17,7 @@ const FacilitiesTable = (props: Props) => {
                     <th>Name</th>
                     <th>Address</th>
                     <th>Courts</th>
-                    <th>Actions</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -26,9 +26,9 @@ const FacilitiesTable = (props: Props) => {
                         <td>{f.name}</td>
                         <td>{f.addressLine1}</td>
                         <td>{f.numberOfCourts}</td>
-                        <td>
-                            <Button outline color="secondary" className="me-1" onClick={() => onEditClick(f.id)}>Edit</Button>
-                            <Button outline color="secondary" onClick={() => onDeleteClick(f.id)}>Delete</Button>
+                        <td className='d-flex justify-content-end'>
+                            <Button outline color="secondary" className="me-1" onClick={() => onEditClick(f.id)}><i className="fa-solid fa-pen"></i></Button>
+                            <Button outline color="secondary" onClick={() => onDeleteClick(f.id)}><i className="fa-solid fa-trash"></i></Button>
                         </td>
                     </tr>
                 )}

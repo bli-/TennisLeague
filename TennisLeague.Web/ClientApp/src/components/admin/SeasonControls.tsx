@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, FormGroup, Label } from "reactstrap";
-import { createSeason, getAllSeasons, getSeasonsOfTheYear } from "../../api/seasonApi";
+import { createSeason, getSeasons, getSeasonAttributes } from "../../api/seasonApi";
 import { LeagueSeason } from "../../models/LeagueSeason";
 import { Season } from "../../models/Season";
+import { SeasonAttributes } from "../../models/SeasonAttributes";
+import { SeasonStatus } from "../../models/SeasonStatus";
 import ModalTemplate from "../shared/ModalTemplate";
 import SeasonEntryForm from "./SeasonEntryForm";
 import { SeasonFormEntryFields } from "./SeasonEntryFormFields";
@@ -20,6 +22,7 @@ const SeasonControls = (props: Props) => {
     const { loading, setSelectedSeason, setError, setLoading} = props;
 
     const [seasonsOfYear, setSeasonsOfYear] = useState<Season[]>([]);
+    const [seasonStatuses, setSeasonStatuses] = useState<SeasonStatus[]>([]);
     const [seasons, setSeasons] = useState<LeagueSeason[]>([]);
     const [isSeasonModalOpen, setSeasonModalOpen] = useState(false);
     const [seasonErrors, setSeasonErrors] = useState<string[]>([]);
@@ -30,7 +33,7 @@ const SeasonControls = (props: Props) => {
         const populateSeasons = async () => {
             let seasons: LeagueSeason[];
             try {
-                seasons = await getAllSeasons();
+                seasons = await getSeasons();
 
                 setSeasons(seasons);
                 if (seasons.length > 0) {
@@ -48,20 +51,21 @@ const SeasonControls = (props: Props) => {
     }, [refreshSeasons, setSeasons, setLoading, setError, setSelectedSeason])
 
     useEffect(() => {
-        const populateSeasonsOfYear = async () => {
-            let seasonsOfYear: Season[];
+        const populateSeasonAttributes = async () => {
+            let attributes: SeasonAttributes;
             try {
-                seasonsOfYear = await getSeasonsOfTheYear();
-                setSeasonsOfYear(seasonsOfYear);
+                attributes = await getSeasonAttributes();
             } catch (e) {
                 setError("Server error. Please try again later.");
                 return;
             }
-
+            
+            setSeasonsOfYear(attributes.seasons);
+            setSeasonStatuses(attributes.statuses);
             setLoading(false);
         }
 
-        populateSeasonsOfYear();
+        populateSeasonAttributes();
     }, [setError, setLoading])
 
     const onSeasonSelect = (id: number) => {
