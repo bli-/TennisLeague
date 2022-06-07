@@ -14,13 +14,13 @@ namespace TennisLeague.Data
         [Required]
         public string Gender { get; set; } = null!;
         [Required]
-        public int SeasonID { get; set; }
+        public int LeagueSeasonID { get; set; }
         [Required]
         public int RatingID { get; set; }
         [Required]
         public int MatchTypeID { get; set; }
 
-        public Season? Season { get; set; }
+        public LeagueSeason? Season { get; set; }
         public Rating? Rating { get; set; }
         public MatchType? MatchType { get; set; }
         public IList<SessionFacility>? Facilities { get; set; }

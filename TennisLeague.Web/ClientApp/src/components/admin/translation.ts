@@ -8,7 +8,8 @@ export function mapToSessionDto (sessionFields: SessionEntryFormFields, seasonSt
     matchStartDate.setHours(hour24Format, 0, 0, 0);
 
     let ret = new Session();
-    ret.seasonID = sessionFields.seasonID;
+    ret.id = sessionFields.id;
+    ret.leagueSeasonID = sessionFields.leagueSeasonID;
     ret.matchStart = new Date(matchStartDate);
     ret.matchTypeID = sessionFields.matchTypeID;
     ret.ratingID = sessionFields.ratingID;
@@ -19,8 +20,9 @@ export function mapToSessionDto (sessionFields: SessionEntryFormFields, seasonSt
 
 export function mapToSessionEntryFields(session: Session): SessionEntryFormFields {
     let fields = new SessionEntryFormFields();
+    fields.id = session.id
     fields.gender = session.gender;
-    fields.seasonID = session.seasonID;
+    fields.leagueSeasonID = session.leagueSeasonID;
     fields.ratingID = session.ratingID;
     fields.matchTypeID = session.matchTypeID;
     fields.facilityIds = session.availableFacilityIDs;

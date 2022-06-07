@@ -24,7 +24,7 @@ export function findFirstDayAfterDate(date: Date, dayOfWeek: DayOfWeek): Date {
     let currentDay = date.getDay();
     let diff: number;
     if (currentDay < Number(dayOfWeek)) {
-        diff = currentDay + Number(dayOfWeek);
+        diff = Number(dayOfWeek) - currentDay; 
     } else {
         diff = 7 - currentDay + Number(dayOfWeek);
     }
