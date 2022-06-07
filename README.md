@@ -24,3 +24,4 @@ Things I've learned so far with this project:
 - Fetch API
 - Automapper
 - Mock-ups with Figma
+- Basic testing with Jest
