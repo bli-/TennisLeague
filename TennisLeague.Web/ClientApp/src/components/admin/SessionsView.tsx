@@ -79,7 +79,7 @@ const SessionsView = (props: Props) => {
     }
 
     const onAddSessionClick = () => {
-        setSessionToEdit(new SessionEntryFormFields())
+        setSessionToEdit(new SessionEntryFormFields(selectedSeason.id))
         setModalMode(ModalMode["Add Session"]);
         toggleSessionModal();
     }
@@ -109,7 +109,7 @@ const SessionsView = (props: Props) => {
             return;
         }
 
-        setSessionToEdit(new SessionEntryFormFields());
+        setSessionToEdit(new SessionEntryFormFields(selectedSeason.id));
         toggleSessionModal();
         setRefreshSessions(true);
     }
@@ -138,15 +138,7 @@ const SessionsView = (props: Props) => {
     if (error != null) {
         contents = <div className="alert alert-danger" role="alert">{error}</div>
     } else if (sessions.length > 0) {
-        contents = <> 
-                        <ModalTemplate
-                            isOpen={isSessionModalOpen} 
-                            submit={sessionModalSubmit} 
-                            headerText={ModalMode[modalMode]}
-                            submitButtonText={ModalMode[modalMode]}
-                            toggleOpen={toggleSessionModal}
-                            content={CreateSessionEntryForm()}
-                        />
+        contents = <>
                         <SessionsTable 
                             sessions={sessions} 
                             matchTypes={matchTypes} 
@@ -162,6 +154,14 @@ const SessionsView = (props: Props) => {
 
     return (
         <>
+            <ModalTemplate
+                isOpen={isSessionModalOpen} 
+                submit={sessionModalSubmit} 
+                headerText={ModalMode[modalMode]}
+                submitButtonText={ModalMode[modalMode]}
+                toggleOpen={toggleSessionModal}
+                content={CreateSessionEntryForm()}
+            />
             {contents}
             <Button color="primary" onClick={() => onAddSessionClick()}>Add Session</Button>
         </>

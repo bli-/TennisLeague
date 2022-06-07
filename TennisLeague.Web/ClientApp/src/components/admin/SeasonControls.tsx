@@ -81,7 +81,7 @@ const SeasonControls = (props: Props) => {
         try {
             await createSeason(mapToSeasonDto(seasonToAdd));
         } catch (e) {
-            console.log("Server error when creating season");
+            setError("Server error while creating season");
             return;
         }
 
@@ -107,6 +107,9 @@ const SeasonControls = (props: Props) => {
     }
 
     const toggleSeasonModal = () => {
+        if (!isSeasonModalOpen) {
+            setSeasonErrors([]);
+        }
         setSeasonModalOpen(!isSeasonModalOpen);
     }
 
