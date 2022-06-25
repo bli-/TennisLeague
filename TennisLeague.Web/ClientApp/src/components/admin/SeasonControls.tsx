@@ -8,26 +8,35 @@ import { SeasonStatus } from "../../models/SeasonStatus";
 import ModalTemplate from "../shared/ModalTemplate";
 import SeasonEntryForm from "./SeasonEntryForm";
 import { SeasonFormEntryFields } from "./SeasonEntryFormFields";
+import SeasonHeader from "./SeasonHeader";
 import SeasonsDropdown from "./SeasonsDropdown";
 import validateSeason from "./SeasonValidation";
+import { mapToSeasonDto, mapToSeasonEntryFields } from "./translation";
 
 type Props = {
+    selectedSeason: LeagueSeason,
     loading: boolean,
     setSelectedSeason: React.Dispatch<React.SetStateAction<LeagueSeason>>
     setError: React.Dispatch<React.SetStateAction<string>>,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+enum ModalMode {
+    "Add Season",
+    "Edit Season"
+}
+
 const SeasonControls = (props: Props) => {
-    const { loading, setSelectedSeason, setError, setLoading} = props;
+    const { selectedSeason, loading, setSelectedSeason, setError, setLoading} = props;
 
     const [seasonsOfYear, setSeasonsOfYear] = useState<Season[]>([]);
     const [seasonStatuses, setSeasonStatuses] = useState<SeasonStatus[]>([]);
     const [seasons, setSeasons] = useState<LeagueSeason[]>([]);
     const [isSeasonModalOpen, setSeasonModalOpen] = useState(false);
     const [seasonErrors, setSeasonErrors] = useState<string[]>([]);
-    const [seasonToAdd, setSeasonToAdd] = useState<SeasonFormEntryFields>(new SeasonFormEntryFields());
+    const [seasonToEdit, setSeasonToEdit] = useState<SeasonFormEntryFields>(new SeasonFormEntryFields());
     const [refreshSeasons, setRefreshSeasons] = useState(false);
+    const [modalMode, setModalMode] = useState<ModalMode>(ModalMode["Add Season"]);
 
     useEffect(() => {
         const populateSeasons = async () => {
@@ -74,7 +83,7 @@ const SeasonControls = (props: Props) => {
     }
 
     const seasonModalSubmit = async () => {
-        var errors = validateSeason(seasonToAdd, seasons);
+        var errors = validateSeason(seasonToEdit, seasons);
         if (errors.length > 0) {
             setSeasonErrors(errors);
             return;
@@ -83,28 +92,19 @@ const SeasonControls = (props: Props) => {
         }
 
         try {
-            await createSeason(mapToSeasonDto(seasonToAdd));
+            await createSeason(mapToSeasonDto(seasonToEdit));
         } catch (e) {
             setError("Server error while creating season");
             return;
         }
 
-        setSeasonToAdd(new SeasonFormEntryFields());
+        setSeasonToEdit(new SeasonFormEntryFields());
         toggleSeasonModal();
         setRefreshSeasons(true);
     }
-    
-    const mapToSeasonDto = (seasonFields: SeasonFormEntryFields): LeagueSeason => {
-        let ret = new LeagueSeason();
-        ret.startDate = seasonFields.startDate;
-        ret.year = seasonFields.year;
-        ret.seasonID = seasonFields.seasonID;
-        ret.durationInWeeks = seasonFields.seasonLength;
-        return ret;
-    }
 
     const seasonChangeHandler = (key:string, value:any) => {
-        setSeasonToAdd(prevState => ({
+        setSeasonToEdit(prevState => ({
             ...prevState,
             [key]: value
         }));
@@ -117,17 +117,26 @@ const SeasonControls = (props: Props) => {
         setSeasonModalOpen(!isSeasonModalOpen);
     }
 
-    const CreateSeasonEntryForm = () => {
+    const createSeasonEntryForm = () => {
         return <SeasonEntryForm 
                     submit={seasonModalSubmit} 
                     errors={seasonErrors} 
-                    season={seasonToAdd} 
+                    season={seasonToEdit} 
                     seasonsOfYear={seasonsOfYear}
                     changeHandler={seasonChangeHandler}
                 />
     }
 
     const onAddSeasonClick = () => {
+        setSeasonToEdit(new SeasonFormEntryFields());
+        setModalMode(ModalMode["Add Season"]);
+        toggleSeasonModal();
+    }
+
+    const onEditSeasonClick = (id: number) => {
+        let season = seasons.find(s => s.id === id);
+        setSeasonToEdit(mapToSeasonEntryFields(season));
+        setModalMode(ModalMode["Edit Season"]);
         toggleSeasonModal();
     }
 
@@ -136,10 +145,10 @@ const SeasonControls = (props: Props) => {
             <ModalTemplate
                 isOpen={isSeasonModalOpen} 
                 submit={seasonModalSubmit} 
-                headerText={`Add Season`}
-                submitButtonText={`Add Season`}
+                headerText={ModalMode[modalMode]}
+                submitButtonText={ModalMode[modalMode]}
                 toggleOpen={toggleSeasonModal}
-                content={CreateSeasonEntryForm()}
+                content={createSeasonEntryForm()}
             />
             <Form>
                 <FormGroup row>
@@ -147,11 +156,12 @@ const SeasonControls = (props: Props) => {
                     <Col sm={2}>
                         <SeasonsDropdown seasons={seasons} seasonsOfYear={seasonsOfYear} onSelect={onSeasonSelect} loading={loading} />
                     </Col>
-                    <Col sm={{size: 2, offset: 7}}>
+                    <Col sm={{size: 3, offset: 6}} className="d-flex justify-content-end">
                         <Button outline color="primary" onClick={onAddSeasonClick} disabled={loading}>Create New Season</Button>
                     </Col>
                 </FormGroup>
             </Form>
+            <SeasonHeader seasonsOfYear={seasonsOfYear} currentSeason={selectedSeason} statuses={seasonStatuses} onEditClick={onEditSeasonClick}/>
         </>
     )
 }

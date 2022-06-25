@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TennisLeague.API.Models;
 using TennisLeague.DataAccess;
-using LeagueSeason = TennisLeague.Data.LeagueSeason;
 
 namespace TennisLeague.API.Controllers
 {
@@ -20,8 +18,9 @@ namespace TennisLeague.API.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult<Models.LeagueSeason>> Get([FromQuery] SeasonFilter filterDto)
+        public async Task<ActionResult<Models.LeagueSeason>> Get([FromQuery] Models.SeasonFilter filterDto)
         {
+            await _seasonRepository.UpdateSeasonStatuses();
             var filter = _mapper.Map<DataAccess.Models.SeasonFilter>(filterDto);
             var seasons = await _seasonRepository.GetAll(filter);
 
@@ -49,7 +48,7 @@ namespace TennisLeague.API.Controllers
                 return BadRequest();
             }
 
-            var seasonDb = _mapper.Map<LeagueSeason>(seasonDto);
+            var seasonDb = _mapper.Map<Data.LeagueSeason>(seasonDto);
             seasonDb = await _seasonRepository.Create(seasonDb);
 
             return CreatedAtAction(nameof(Get), new { id = seasonDb.ID }, seasonDto);
@@ -58,7 +57,7 @@ namespace TennisLeague.API.Controllers
         [HttpPut()]
         public async Task<ActionResult> Edit(Models.LeagueSeason seasonDto)
         {
-            var seasonDb = _mapper.Map<LeagueSeason>(seasonDto);
+            var seasonDb = _mapper.Map<Data.LeagueSeason>(seasonDto);
             await _seasonRepository.Update(seasonDb);
             return Ok();
         }
@@ -69,6 +68,14 @@ namespace TennisLeague.API.Controllers
             var attributes = await _seasonRepository.GetSeasonAttributes();
 
             return Ok(_mapper.Map<Models.SeasonAttributes>(attributes));
+        }
+
+        [HttpPost("updateStatuses")]
+        public async Task<ActionResult> UpdateSeasonStatuses()
+        {
+            await _seasonRepository.UpdateSeasonStatuses();
+
+            return Ok();
         }
     }
 }

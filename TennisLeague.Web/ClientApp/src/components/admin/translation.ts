@@ -1,5 +1,7 @@
+import { LeagueSeason } from "../../models/LeagueSeason";
 import { Session } from "../../models/Session";
 import { findFirstDayAfterDate } from "../../utilities/dateTimeHelpers";
+import { SeasonFormEntryFields } from "./SeasonEntryFormFields";
 import { SessionEntryFormFields } from "./SessionEntryFormFields";
 
 export function mapToSessionDto (sessionFields: SessionEntryFormFields, seasonStartDate: Date): Session {
@@ -30,4 +32,24 @@ export function mapToSessionEntryFields(session: Session): SessionEntryFormField
     fields.matchAmpm = session.matchStart.getHours() >= 12 ? 'PM' : 'AM';
     fields.dayOfWeek = session.matchStart.getDay();
     return fields;
+}
+
+export function mapToSeasonEntryFields(season: LeagueSeason): SeasonFormEntryFields {
+    let fields = new SeasonFormEntryFields();
+    fields.id = season.id;
+    fields.seasonID = season.seasonID;
+    fields.year = season.year;
+    fields.startDate = season.startDate;
+    fields.seasonLength = season.durationInWeeks;
+    fields.registrationDate = season.registrationDate;
+    return fields;
+}
+    
+export function mapToSeasonDto(seasonFields: SeasonFormEntryFields): LeagueSeason {
+    let ret = new LeagueSeason();
+    ret.startDate = seasonFields.startDate;
+    ret.year = seasonFields.year;
+    ret.seasonID = seasonFields.seasonID;
+    ret.durationInWeeks = seasonFields.seasonLength;
+    return ret;
 }

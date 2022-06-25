@@ -27,6 +27,15 @@ it('should add days to a date', async () => {
     expect(result).toStrictEqual(new Date('1/8/2022 12:00 AM'));
 });
 
+it('should subtract days on a date', async () => {
+    let date = new Date('1/1/2022 12:00 AM');
+    let days = -7;
+
+    let result = addDaysToDate(date, days);
+    
+    expect(result).toStrictEqual(new Date('12/25/2021 12:00 AM'));
+});
+
 it('should return first occurance of a day if date is later in the week', async() => {
     let date = new Date('2/1/2022 12:00 AM'); // tuesday
     let dayOfWeek = DayOfWeek.Thursday;

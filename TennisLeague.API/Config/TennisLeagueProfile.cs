@@ -19,9 +19,11 @@ namespace TennisLeague.API.Config
             CreateMap<Season, Models.Season>();
             CreateMap<LeagueSeasonStatus, Models.LeagueSeasonStatus>();
 
-            CreateMap<LeagueSeason, Models.LeagueSeason>();
+            CreateMap<LeagueSeason, Models.LeagueSeason>()
+                .ForMember(dest => dest.StatusID, opt => opt.MapFrom(src => src.Status));
             CreateMap<Models.LeagueSeason, LeagueSeason>()
-                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.Date)); ;
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.Date))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.StatusID));
 
             CreateMap<Session, Models.Session>()
                 .ForMember(dest => dest.AvailableFacilityIDs, opt => opt.MapFrom(src => src.Facilities == null ? new int[0] : src.Facilities.Select(facility => facility.FacilityID)));

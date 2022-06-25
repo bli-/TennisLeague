@@ -19,5 +19,7 @@ namespace TennisLeague.Data
         public short DurationInWeeks { get; set; }
         [Required]
         public int Status { get; set; }
+        [Required]
+        public DateTime RegistrationDate { get; set; }
     }
 }

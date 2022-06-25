@@ -179,15 +179,19 @@ const SessionEntryForm = (props: Props) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Label>Session Location(s)</Label>
+                    <Col>
+                        <Label>Session Location(s)</Label>
+                    </Col>
                 </Row>
                 <Row>
-                    <Select options={facilities}
-                            getOptionLabel={facility => facility.name}
-                            getOptionValue={facility => facility.id.toString()}
-                            value={facilities.filter(f => session.facilityIds.includes(f.id))}
-                            isMulti
-                            onChange={onFacilitySelectChange}/>
+                    <Col>
+                        <Select options={facilities}
+                                getOptionLabel={facility => facility.name}
+                                getOptionValue={facility => facility.id.toString()}
+                                value={facilities.filter(f => session.facilityIds.includes(f.id))}
+                                isMulti
+                                onChange={onFacilitySelectChange}/>
+                    </Col>
                 </Row>
             </Form>
         </>
