@@ -10,6 +10,7 @@ import { Facility } from "../../models/Facility";
 import { LeagueSeason } from "../../models/LeagueSeason";
 import SeasonControls from "./SeasonControls";
 import SessionsView from "./SessionsView";
+import { updateSeasonStatuses } from "../../api/seasonApi";
 
 const Admin = () => {
     const [selectedSeason, setSelectedSeason] = useState<LeagueSeason>(null);
@@ -22,6 +23,7 @@ const Admin = () => {
     useEffect(() => {
         populateAttributes();
         populateFacilities();
+        updateStatuses();
     }, [])
 
     const populateAttributes = async() => {
@@ -55,11 +57,22 @@ const Admin = () => {
         setLoading(false);
     }
 
+    const updateStatuses = async() => {
+        try {
+            await updateSeasonStatuses();
+        } catch(e) {
+            setError("Server error. Please try again later.");
+        }
+
+        setLoading(false);
+    }
+
     return (
         <>
             <h1>Season Management</h1>
             <div>
                 <SeasonControls 
+                    selectedSeason={selectedSeason}
                     loading={loading} 
                     setSelectedSeason={setSelectedSeason} 
                     setError={setError} 

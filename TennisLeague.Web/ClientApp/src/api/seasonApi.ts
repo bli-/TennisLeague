@@ -1,7 +1,7 @@
 import { LeagueSeason } from "../models/LeagueSeason";
 import { SeasonAttributes } from "../models/SeasonAttributes";
 import { SeasonFilter } from "../models/SeasonFilter";
-import { apiDelete, create, get, getAll, getById, update } from "./baseApi";
+import { apiDelete, create, get, getAll, getById, post, update } from "./baseApi";
 
 export async function getSeasons(filter: SeasonFilter = null): Promise<LeagueSeason[]> {
     let queryUrl = "/season?";
@@ -36,7 +36,12 @@ export async function getSeasonAttributes(): Promise<SeasonAttributes> {
     return await get<SeasonAttributes>("/season/attributes");
 }
 
+export async function updateSeasonStatuses() {
+    return await post("season/updateStatuses");
+}
+
 function fixLeagueSeasonDates(season: LeagueSeason): LeagueSeason {
     season.startDate = new Date(season.startDate);
+    season.registrationDate = new Date(season.registrationDate);
     return season;
 }

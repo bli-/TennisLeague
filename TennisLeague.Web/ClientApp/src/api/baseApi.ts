@@ -21,8 +21,21 @@ export async function create<Type>(url: string, arg: Type): Promise<Type> {
     if (!response.ok) {
         throw new Error(response.statusText);
     }
-
     return response.json() as Promise<Type>;
+}
+
+export async function post(url: string) {
+    var response = await fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
 }
 
 export async function apiDelete(url:string, id: number): Promise<void> {

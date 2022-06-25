@@ -23,8 +23,8 @@ const SeasonEntryForm = (props: Props) => {
     const onFieldChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => 
         changeHandler && changeHandler(event.target.name, Number(event.target.value))
 
-    const onStartDateChange = (date: Date) => {
-        changeHandler && changeHandler("startDate", date);
+    const onDateChange = (date: Date, fieldName: string) => {
+        changeHandler && changeHandler(fieldName, date);
     }
 
     const onYearButtonClick = (year: number) => {
@@ -88,21 +88,37 @@ const SeasonEntryForm = (props: Props) => {
                 <Row>
                     <Col>
                         <FormGroup>
-                            <Label for="startDate">Start Date</Label>
+                            <Label for="registrationDate">Registration Date</Label>
                             <DatePicker
-                                id="startDate"
-                                name="startDate"
+                                id="registrationDate"
+                                name="registrationDate"
                                 className="form-control"
-                                selected={season.startDate}
-                                onChange={onStartDateChange}
-                                minDate={minDate}
+                                selected={season.registrationDate}
+                                onChange={(value) => onDateChange(value, 'registrationDate')}
+                                minDate={addDaysToDate(season.registrationDate, -60)}
                                 maxDate={maxDate}
                             />
                         </FormGroup>
                     </Col>
                     <Col>
                         <FormGroup>
-                            <Label for="endDate">Length of Season</Label>
+                            <Label for="startDate">Start Date</Label>
+                            <DatePicker
+                                id="startDate"
+                                name="startDate"
+                                className="form-control"
+                                selected={season.startDate}
+                                onChange={(value) => onDateChange(value, 'startDate')}
+                                minDate={minDate}
+                                maxDate={maxDate}
+                            />
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <FormGroup>
+                            <Label for="seasonLength">Length of Season</Label>
                             <InputGroup>
                                 <Input
                                     id="seasonLength"
@@ -115,8 +131,10 @@ const SeasonEntryForm = (props: Props) => {
                             </InputGroup>
                         </FormGroup>
                     </Col>
+                    <Col>
+                    </Col>
                 </Row>
-                
+
             </Form>
 
             <div className="mt-4 text-center">

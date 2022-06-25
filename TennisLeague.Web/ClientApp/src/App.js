@@ -8,7 +8,7 @@ import Rules from './components/rules/rules';
 import About from './components/about/about';
 import LeaguesPage from './components/leagues/Leagues';
 
-import './custom.css'
+import './styles/app.css'
 
 export default class App extends Component {
   static displayName = App.name;

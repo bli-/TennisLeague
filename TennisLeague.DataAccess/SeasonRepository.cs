@@ -27,13 +27,39 @@ namespace TennisLeague.DataAccess
         public async Task<IEnumerable<LeagueSeason>> GetAll(SeasonFilter filter)
         {
             var query = _context.LeagueSeasons.AsQueryable();
-
-            if (filter.StatusID.HasValue)
+            
+            if (filter != null)
             {
-                query = query.Where(z => z.Status == filter.StatusID);
+                if (filter.StatusID.HasValue)
+                {
+                    query = query.Where(z => z.Status == filter.StatusID);
+                }
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task UpdateSeasonStatuses()
+        {
+            var nonCompletedSeasons = await _context.LeagueSeasons.Where(s => s.Status != (int)SeasonStatus.Completed).ToListAsync();
+
+            foreach (var season in nonCompletedSeasons)
+            {
+                if (season.StartDate.AddDays(season.DurationInWeeks * 7) <= DateTime.Now)
+                {
+                    season.Status = (int)SeasonStatus.Completed;
+                }
+                else if (season.StartDate <= DateTime.Now)
+                {
+                    season.Status = (int)SeasonStatus.Active;
+                }
+                else if (season.RegistrationDate <= DateTime.Now)
+                {
+                    season.Status = (int)SeasonStatus.OpenRegistration;
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

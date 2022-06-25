@@ -7,5 +7,7 @@
         public int Year { get; set; }
         public DateTime StartDate { get; set; }
         public int DurationInWeeks { get; set; }
+        public int StatusID { get; set; }
+        public DateTime RegistrationDate { get; set; }
     }
 }
